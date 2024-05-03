@@ -7,18 +7,28 @@ server:
   servlet:
     context-path: /${spring.application.name}
 
-spaces:
-  cdn-type: ${CDN_TYPE:do-s3}
-  cdn-upload-path: ${CDN_UPLOAD_PATH:""}
-  do-files: https://uxin.sgp1.digitaloceanspaces.com
-  url: https://sgp1.digitaloceanspaces.com
-  cdn-url: https://ucdn.xindus.net
-  region: sgp1
-  bucket: uxin
-  use-cdn: true
-  cdn-max-mb: 10
-  dokey: ${DO_KEY:test}
-  dosecret: ${DO_SECRET:test}
+---
+spring:
+  config:
+    activate:
+      on-profile: local-digitalocean
+
+zfiles:
+  cdn-type: local
+  max-filesize-mb: 10
+
+local:
+  prefix-fetch: http://localhost
+  prefix-upload: /Users/madan/Documents/JayaMeen/www/files
+
+digitalocean:
+  spaces:
+    upload-url: https://sgp1.digitaloceanspaces.com
+    prefix-url: https://uxin.sgp1.digitaloceanspaces.com
+    region: sgp1
+    bucket: uxin
+    dokey: ${DO_KEY:test}
+    dosecret: ${DO_SECRET:test}
 
 gcp:
   project:
