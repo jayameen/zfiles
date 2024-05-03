@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: zfiles-api
+
+server:
+  port: 8080
+  servlet:
+    context-path: ${spring.application.name}
+
+spaces:
+  cdn-type: ${CDN_TYPE:do-s3}
+  cdn-upload-path: ${CDN_UPLOAD_PATH:""}
+  do-files: https://uxin.sgp1.digitaloceanspaces.com
+  url: https://sgp1.digitaloceanspaces.com
+  cdn-url: https://ucdn.xindus.net
+  region: sgp1
+  bucket: uxin
+  use-cdn: true
+  cdn-max-mb: 10
+  dokey: ${DO_KEY:test}
+  dosecret: ${DO_SECRET:test}
+
+gcp:
+  project:
+    id: ${GCP_PROJECT_ID}
+  bucket:
+    id: ${GCP_BUCKET_ID}
+  url: https://storage.googleapis.com/
+  config-data: ${GCP_CONFIG_DATA_KEY}
