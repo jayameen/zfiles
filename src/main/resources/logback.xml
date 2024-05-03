@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
-    <property name="LOGS" value="${catalina.home}/logs" />
+    <property name="FOLDER" value="${catalina.home:-./target}" />
     <property name="FILENAME" value="zfiles"/>
 
     <appender name="Console"
@@ -15,7 +14,7 @@
 
     <appender name="RollingFile"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/${FILENAME}.log</file>
+        <file>${FOLDER}/logs/${FILENAME}.log</file>
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
@@ -24,7 +23,7 @@
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOGS}/archived/${FILENAME}-%d{yyyy-MM-dd}.%i.log
+            <fileNamePattern>${FOLDER}/logs/archived/${FILENAME}-%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">

@@ -8,10 +8,10 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @PropertySource({"classpath:/application.yml"})
-public class ZFileServiveApplication extends SpringBootServletInitializer {
+public class ZFilesApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ZFileServiveApplication.class, args);
+		SpringApplication.run(ZFilesApplication.class, args);
 	}
 
 }
