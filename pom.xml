@@ -145,7 +145,7 @@
 							<goal>repackage</goal>
 						</goals>
 						<configuration>
-							<mainClass>net.xindus.fileservice.FileServiveApplication</mainClass>
+							<mainClass>com.jayameen.zfiles.ZFileServiveApplication</mainClass>
 						</configuration>
 					</execution>
 				</executions>
