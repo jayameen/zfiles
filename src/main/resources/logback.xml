@@ -2,7 +2,7 @@
 <configuration>
 
     <property name="LOGS" value="${catalina.home}/logs" />
-    <property name="FILENAME" value="file-service"/>
+    <property name="FILENAME" value="zfiles"/>
 
     <appender name="Console"
               class="ch.qos.logback.core.ConsoleAppender">
@@ -40,7 +40,7 @@
     </root>
 
     <!-- LOG "net.xindus*" at TRACE level -->
-    <logger name="net.xindus" level="trace" additivity="false">
+    <logger name="com.jayameen" level="trace" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>
