@@ -1,5 +1,10 @@
 package com.jayameen.zfiles.factory;
 
+import com.jayameen.zfiles.factory.adaptors.*;
+import com.jayameen.zfiles.factory.adaptors.impl.ZfileAWS;
+import com.jayameen.zfiles.factory.adaptors.impl.ZfileDigitalOcean;
+import com.jayameen.zfiles.factory.adaptors.impl.ZfileGCP;
+import com.jayameen.zfiles.factory.adaptors.impl.ZfileLocal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

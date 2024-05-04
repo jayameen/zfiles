@@ -1,15 +1,14 @@
-package com.jayameen.zfiles.factory;
+package com.jayameen.zfiles.factory.adaptors.impl;
 
 import com.jayameen.zfiles.dto.FileRequest;
-import com.jayameen.zfiles.utils.FileUtils;
+import com.jayameen.zfiles.factory.adaptors.Zfile;
+import com.jayameen.zfiles.utils.ZFileUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -22,30 +21,42 @@ public class ZfileLocal implements Zfile {
 
     @Value("${local.prefix-fetch}") private String prefixFetch;
     @Value("${local.prefix-upload}") private String prefixUpload;
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public String createOrUpdateFromFile(String filePath, String fileName, byte [] content) throws Exception{
+        File file = new File(ZFileUtils.creatAbsoluteFilePath(prefixUpload, filePath, fileName));
+        FileUtils.writeByteArrayToFile(file, content);
+        return ZFileUtils.createFileHttpURL(prefixFetch,filePath,fileName);
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public String getFileInBase64(FileRequest request) throws Exception {
+        if(StringUtils.isBlank(request.getFileName())){
+            throw new Exception("Invalid File Url");
+        }else{
+            String fetchFileName = request.getFileName();
+            if(fetchFileName.trim().startsWith(prefixFetch)){
+                fetchFileName = fetchFileName.replace(prefixFetch, "");
+            }
+            File file = new File(prefixUpload+fetchFileName);
+            return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file));
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public List<String> createOrUpdateMultipleFromBase64Content(List<FileRequest> requests) throws Exception{
         List<String> responseUrls = new ArrayList<>();
         for(FileRequest req : requests ){
-            responseUrls.add(createOrUpdateFromBase64Content(req));
+            try {
+                responseUrls.add(createOrUpdateFromBase64Content(req));
+            }catch (Exception ex){
+                responseUrls.add(null);
+            }
         }
         return responseUrls;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public String createOrUpdateFromBase64Content(FileRequest request) throws Exception{
-        String   fileName = FileUtils.cleanFileName(request.getFileName());
-        String   filePath = FileUtils.cleanFilePath(request.getFilePath());
-        String uploadPath = FileUtils.cleanFilePath(prefixUpload + filePath);
-        FileUtils.ensureDirectoryExists(uploadPath);
-
-        File                        file = new File( uploadPath + File.separator + fileName);
-        try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file))) {
-            stream.write(Base64.getDecoder().decode(request.getBase64Data().getBytes()));
-            stream.flush();
-        } catch (IOException e) {
-            throw new Exception("Error creating file!");
-        }
-        return prefixFetch + filePath + "/" +file.getName();
+        File file = new File(ZFileUtils.creatAbsoluteFilePath(prefixUpload, request.getFilePath(), request.getFileName()));
+        FileUtils.writeByteArrayToFile(file, Base64.getDecoder().decode(request.getBase64Data().getBytes()));
+        return ZFileUtils.createFileHttpURL(prefixFetch,request.getFilePath(),request.getFileName());
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Boolean deleteFileByUrl(FileRequest request) throws Exception{
@@ -64,7 +75,11 @@ public class ZfileLocal implements Zfile {
     public List<Boolean> deleteMultipleFilesByUrl(List<FileRequest> requests) throws Exception{
         List<Boolean> responseUrls = new ArrayList<>();
         for(FileRequest req : requests ){
-            responseUrls.add(deleteFileByUrl(req));
+           try{
+               responseUrls.add(deleteFileByUrl(req));
+           }catch (Exception ex){
+               responseUrls.add(false);
+           }
         }
         return responseUrls;
     }

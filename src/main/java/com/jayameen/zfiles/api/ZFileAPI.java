@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,23 @@ import java.util.List;
 public class ZFileAPI {
 
     private final ZfileFactory factory;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @RequestMapping(value="/file", method = { RequestMethod.POST, RequestMethod.PUT })
+    public ResponseEntity<AppResponse> createOrUpdateFromFile(@RequestParam("file") MultipartFile file, @RequestParam("file_path") String uploadPath) throws Exception {
+        AppResponse appResponse = new AppResponse<>();
+        appResponse.setStatus(HttpStatus.OK.getReasonPhrase().toLowerCase());
+        System.out.println("name > " + file.getOriginalFilename());
+        appResponse.setData(Collections.singletonList(factory.getZfile().createOrUpdateFromFile(uploadPath, file.getOriginalFilename(), file.getBytes())));
+        return ResponseEntity.ok().body(appResponse);
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @GetMapping(value = "/base64")
+    public ResponseEntity<AppResponse> getFileInBase64(@RequestBody FileRequest request) throws Exception {
+        AppResponse appResponse = new AppResponse<>();
+        appResponse.setStatus(HttpStatus.OK.getReasonPhrase().toLowerCase());
+        appResponse.setData(Collections.singletonList(factory.getZfile().getFileInBase64(request)));
+        return ResponseEntity.ok().body(appResponse);
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping(value="/base64", method = { RequestMethod.POST, RequestMethod.PUT })
     public ResponseEntity<AppResponse> createOrUpdateFromBase64Content(@RequestBody FileRequest request) throws Exception {

@@ -1,4 +1,4 @@
-package com.jayameen.zfiles.factory;
+package com.jayameen.zfiles.factory.adaptors;
 
 import com.jayameen.zfiles.dto.FileRequest;
 
@@ -8,6 +8,10 @@ import java.util.List;
  * @author Madan KN
  */
 public interface Zfile {
+
+    String createOrUpdateFromFile(String path, String fileName, byte[] file) throws Exception;
+
+    String getFileInBase64(FileRequest request) throws Exception;
 
     String createOrUpdateFromBase64Content(FileRequest request) throws Exception;
 
