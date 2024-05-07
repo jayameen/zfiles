@@ -19,28 +19,34 @@ import java.util.List;
 @Component
 public class ZfileLocal implements Zfile {
 
-    @Value("${local.prefix-fetch}") private String prefixFetch;
+    @Value("${local.prefix-http-url}") private String prefixHttpUrl;
     @Value("${local.prefix-upload}") private String prefixUpload;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public String createOrUpdateFromFile(String filePath, String fileName, byte [] content) throws Exception{
-        File file = new File(ZFileUtils.creatAbsoluteFilePath(prefixUpload, filePath, fileName));
-        FileUtils.writeByteArrayToFile(file, content);
-        return ZFileUtils.createFileHttpURL(prefixFetch,filePath,fileName);
+    @Override
+    public String createOrUpdateFromFile(FileRequest request) throws Exception{
+        File file = new File(ZFileUtils.creatAbsoluteFilePath(prefixUpload, request.getFilePath(), request.getFileName()));
+        FileUtils.writeByteArrayToFile(file, request.getByteArray());
+        return ZFileUtils.createFileHttpURL(prefixHttpUrl,request.getFilePath(),request.getFileName());
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
     public String getFileInBase64(FileRequest request) throws Exception {
-        if(StringUtils.isBlank(request.getFileName())){
+        if(StringUtils.isBlank(request.getFileUrl())){
             throw new Exception("Invalid File Url");
         }else{
-            String fetchFileName = request.getFileName();
-            if(fetchFileName.trim().startsWith(prefixFetch)){
-                fetchFileName = fetchFileName.replace(prefixFetch, "");
+            String fetchFileName = request.getFileUrl();
+            if(fetchFileName.trim().startsWith(prefixHttpUrl)){
+                fetchFileName = fetchFileName.replace(prefixHttpUrl, "");
             }
             File file = new File(prefixUpload+fetchFileName);
-            return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file));
+            if(file.exists()){
+                return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file));
+            }
         }
+        throw new Exception("File Not Found");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
     public List<String> createOrUpdateMultipleFromBase64Content(List<FileRequest> requests) throws Exception{
         List<String> responseUrls = new ArrayList<>();
         for(FileRequest req : requests ){
@@ -53,25 +59,28 @@ public class ZfileLocal implements Zfile {
         return responseUrls;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
     public String createOrUpdateFromBase64Content(FileRequest request) throws Exception{
         File file = new File(ZFileUtils.creatAbsoluteFilePath(prefixUpload, request.getFilePath(), request.getFileName()));
         FileUtils.writeByteArrayToFile(file, Base64.getDecoder().decode(request.getBase64Data().getBytes()));
-        return ZFileUtils.createFileHttpURL(prefixFetch,request.getFilePath(),request.getFileName());
+        return ZFileUtils.createFileHttpURL(prefixHttpUrl,request.getFilePath(),request.getFileName());
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
     public Boolean deleteFileByUrl(FileRequest request) throws Exception{
-        if(StringUtils.isBlank(request.getFileName())){
+        if(StringUtils.isBlank(request.getFileUrl())){
             throw new Exception("Invalid File Url");
         }else{
-            String deleteFilePath = request.getFileName();
-            if(deleteFilePath.trim().startsWith(prefixFetch)){
-                deleteFilePath = deleteFilePath.replace(prefixFetch, "");
+            String deleteFilePath = request.getFileUrl();
+            if(deleteFilePath.trim().startsWith(prefixHttpUrl)){
+                deleteFilePath = deleteFilePath.replace(prefixHttpUrl, "");
             }
             File file = new File(prefixUpload+deleteFilePath);
             return file.delete();
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
     public List<Boolean> deleteMultipleFilesByUrl(List<FileRequest> requests) throws Exception{
         List<Boolean> responseUrls = new ArrayList<>();
         for(FileRequest req : requests ){

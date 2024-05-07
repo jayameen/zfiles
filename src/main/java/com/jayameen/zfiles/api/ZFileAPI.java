@@ -24,11 +24,15 @@ public class ZFileAPI {
     private final ZfileFactory factory;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping(value="/file", method = { RequestMethod.POST, RequestMethod.PUT })
-    public ResponseEntity<AppResponse> createOrUpdateFromFile(@RequestParam("file") MultipartFile file, @RequestParam("file_path") String uploadPath) throws Exception {
+    public ResponseEntity<AppResponse> createOrUpdateFromFile(@RequestParam("file") MultipartFile file, @RequestParam("file_path") String uploadPath, @RequestParam("is_private") Boolean isPrivate) throws Exception {
         AppResponse appResponse = new AppResponse<>();
+        FileRequest request     = new FileRequest();
+        request.setFileName(file.getOriginalFilename());
+        request.setFilePath(uploadPath);
+        request.setIsPrivate(isPrivate);
+        request.setByteArray(file.getBytes());
+        appResponse.setData(Collections.singletonList(factory.getZfile().createOrUpdateFromFile(request)));
         appResponse.setStatus(HttpStatus.OK.getReasonPhrase().toLowerCase());
-        System.out.println("name > " + file.getOriginalFilename());
-        appResponse.setData(Collections.singletonList(factory.getZfile().createOrUpdateFromFile(uploadPath, file.getOriginalFilename(), file.getBytes())));
         return ResponseEntity.ok().body(appResponse);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

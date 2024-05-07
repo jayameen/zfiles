@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface Zfile {
 
-    String createOrUpdateFromFile(String path, String fileName, byte[] file) throws Exception;
+    String createOrUpdateFromFile(FileRequest request) throws Exception;
 
     String getFileInBase64(FileRequest request) throws Exception;
 

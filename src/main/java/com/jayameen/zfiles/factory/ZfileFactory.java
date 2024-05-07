@@ -3,7 +3,7 @@ package com.jayameen.zfiles.factory;
 import com.jayameen.zfiles.factory.adaptors.*;
 import com.jayameen.zfiles.factory.adaptors.impl.ZfileAWS;
 import com.jayameen.zfiles.factory.adaptors.impl.ZfileDigitalOcean;
-import com.jayameen.zfiles.factory.adaptors.impl.ZfileGCP;
+import com.jayameen.zfiles.factory.adaptors.impl.ZfileGCS;
 import com.jayameen.zfiles.factory.adaptors.impl.ZfileLocal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +21,9 @@ public class ZfileFactory {
    @Value("${zfiles.cdn-type}") private String cdnType;
    private Zfile zfile;
    private final ZfileLocal zfileLocal;
+   private final ZfileGCS zfileGCS;
    private final ZfileDigitalOcean zfileDigitalOcean;
    private final ZfileAWS zfileAWS;
-   private final ZfileGCP zfileGCP;
 
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    public Zfile getZfile(){
@@ -34,9 +34,10 @@ public class ZfileFactory {
    private synchronized void init(){
        switch (cdnType) {
            case "local": this.zfile = zfileLocal; break;
-           //case "digitalocean": this.zfile = zfileDigitalOcean; break;
-           //case "gcp": this.zfile = zfileGCP; break;
-           //case "aws": this.zfile = zfileAWS; break;
+           case "gcp": this.zfile = zfileGCS; break;
+           case "aws": this.zfile = zfileAWS; break;
+           case "digitalocean": this.zfile = zfileDigitalOcean; break;
+
        }
    }
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

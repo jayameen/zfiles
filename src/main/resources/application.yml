@@ -3,7 +3,7 @@ spring:
     name: zfiles
 
 server:
-  port: 8080
+  port: 8081
   servlet:
     context-path: /${spring.application.name}
 
@@ -11,17 +11,31 @@ server:
 spring:
   config:
     activate:
-      on-profile: local-digitalocean
+      on-profile: local
 
 zfiles:
-  cdn-type: local
+  cdn-type: gcp
   max-filesize-mb: 10
 
 local:
-  prefix-fetch: http://localhost
+  prefix-http-url: http://localhost
   prefix-upload: /Users/madan/Documents/JayaMeen/www/files
 
+gcp:
+  prefix-http-url: https://storage.googleapis.com
+  prefix-upload:
+  project-id: ${GCP_PROJECT_ID}
+  bucket-id: ${GCP_BUCKET_ID}
+  upload-url: https://storage.googleapis.com
+  config-data: ${GCP_CONFIG_DATA_KEY}
+
+aws:
+  prefix-http-url: http://localhost
+  prefix-upload:
+
 digitalocean:
+  prefix-http-url: http://localhost
+  prefix-upload:
   spaces:
     upload-url: https://sgp1.digitaloceanspaces.com
     prefix-url: https://uxin.sgp1.digitaloceanspaces.com
@@ -29,11 +43,3 @@ digitalocean:
     bucket: uxin
     dokey: ${DO_KEY:test}
     dosecret: ${DO_SECRET:test}
-
-gcp:
-  project:
-    id: ${GCP_PROJECT_ID}
-  bucket:
-    id: ${GCP_BUCKET_ID}
-  url: https://storage.googleapis.com/
-  config-data: ${GCP_CONFIG_DATA_KEY}

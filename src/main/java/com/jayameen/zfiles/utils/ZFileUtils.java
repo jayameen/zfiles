@@ -13,6 +13,7 @@ public class ZFileUtils {
     public static String cleanFilePath(String filePath) {
         if (StringUtils.isNotBlank(filePath)) {
             filePath = filePath.replaceAll("[^a-zA-Z0-9\\/]", "");
+            filePath = filePath.replaceAll("\\s+", "_");
         }
         if (ObjectUtils.isEmpty(filePath)) {
             filePath = "/";
@@ -41,16 +42,12 @@ public class ZFileUtils {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static String creatAbsoluteFilePath(String prefixUploadPath, String filePath, String fileName){
-        fileName = cleanFileName(fileName);
-        filePath = cleanFilePath(filePath);
-        String uploadPath = cleanFilePath(prefixUploadPath + filePath);
+        String uploadPath = prefixUploadPath + filePath;
         ZFileUtils.ensureDirectoryExists(uploadPath);
         return uploadPath + File.separator + fileName;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static String createFileHttpURL(String prefixFetch, String filePath, String fileName){
-        fileName = cleanFileName(fileName);
-        filePath = cleanFilePath(filePath);
         return prefixFetch + filePath + "/" + fileName;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
