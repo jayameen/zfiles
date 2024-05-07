@@ -14,7 +14,7 @@ spring:
       on-profile: local
 
 zfiles:
-  cdn-type: gcp
+  cdn-type: s3
   max-filesize-mb: 10
 
 local:
@@ -29,17 +29,11 @@ gcp:
   upload-url: https://storage.googleapis.com
   config-data: ${GCP_CONFIG_DATA_KEY}
 
-aws:
-  prefix-http-url: http://localhost
+s3:
+  prefix-http-url: https://uxin.sgp1.digitaloceanspaces.com
   prefix-upload:
-
-digitalocean:
-  prefix-http-url: http://localhost
-  prefix-upload:
-  spaces:
-    upload-url: https://sgp1.digitaloceanspaces.com
-    prefix-url: https://uxin.sgp1.digitaloceanspaces.com
-    region: sgp1
-    bucket: uxin
-    dokey: ${DO_KEY:test}
-    dosecret: ${DO_SECRET:test}
+  region: sgp1
+  bucket-id: uxin
+  upload-url: https://sgp1.digitaloceanspaces.com
+  key: ${DO_KEY:test}
+  secret: ${DO_SECRET:test}

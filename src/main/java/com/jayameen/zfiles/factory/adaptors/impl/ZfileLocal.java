@@ -19,8 +19,8 @@ import java.util.List;
 @Component
 public class ZfileLocal implements Zfile {
 
-    @Value("${local.prefix-http-url}") private String prefixHttpUrl;
-    @Value("${local.prefix-upload}") private String prefixUpload;
+    @Value("${local.prefix-http-url:''}") private String prefixHttpUrl;
+    @Value("${local.prefix-upload:''}") private String prefixUpload;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public String createOrUpdateFromFile(FileRequest request) throws Exception{

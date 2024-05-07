@@ -1,8 +1,7 @@
 package com.jayameen.zfiles.factory;
 
 import com.jayameen.zfiles.factory.adaptors.*;
-import com.jayameen.zfiles.factory.adaptors.impl.ZfileAWS;
-import com.jayameen.zfiles.factory.adaptors.impl.ZfileDigitalOcean;
+import com.jayameen.zfiles.factory.adaptors.impl.ZfileS3;
 import com.jayameen.zfiles.factory.adaptors.impl.ZfileGCS;
 import com.jayameen.zfiles.factory.adaptors.impl.ZfileLocal;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,7 @@ public class ZfileFactory {
    private Zfile zfile;
    private final ZfileLocal zfileLocal;
    private final ZfileGCS zfileGCS;
-   private final ZfileDigitalOcean zfileDigitalOcean;
-   private final ZfileAWS zfileAWS;
+   private final ZfileS3 zfileS3;
 
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    public Zfile getZfile(){
@@ -35,9 +33,7 @@ public class ZfileFactory {
        switch (cdnType) {
            case "local": this.zfile = zfileLocal; break;
            case "gcp": this.zfile = zfileGCS; break;
-           case "aws": this.zfile = zfileAWS; break;
-           case "digitalocean": this.zfile = zfileDigitalOcean; break;
-
+           case "s3": this.zfile = zfileS3; break;
        }
    }
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
