@@ -1,5 +1,5 @@
 # ZFiles
-### A Simple File CRUD API For Multiple Cloud Storage Services (Google Cloud Services, Amazon S3, Azure, Digital Ocean, and many more..)
+### A Simple CRUD REST API For Multiple Cloud Storage Services (Google Cloud Services, Amazon S3, Azure, Digital Ocean, and many more..)
 
 ### Why do I need this?
 1. **Simple API**: ZFiles provides a single API to perform CRUD operations on files stored in multiple cloud storage services.
