@@ -14,7 +14,7 @@ spring:
       on-profile: local
 
 zfiles:
-  cdn-type: s3
+  cdn-type: azure
   max-filesize-mb: 10
 
 local:
@@ -37,3 +37,10 @@ s3:
   upload-url: https://sgp1.digitaloceanspaces.com
   key: ${DO_KEY:test}
   secret: ${DO_SECRET:test}
+
+azure:
+  connection-string: ${AZURE_CONNECTION_STRING}
+  endpoint: ${AZURE_ENDPOINT}
+  container-name: ${AZURE_CONTAINER_NAME}
+  prefix-http-url: https://xindusazureblobstorage.blob.core.windows.net
+  prefix-upload:

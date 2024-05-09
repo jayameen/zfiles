@@ -1,6 +1,7 @@
 package com.jayameen.zfiles.factory;
 
 import com.jayameen.zfiles.factory.adaptors.*;
+import com.jayameen.zfiles.factory.adaptors.impl.ZfileAzure;
 import com.jayameen.zfiles.factory.adaptors.impl.ZfileS3;
 import com.jayameen.zfiles.factory.adaptors.impl.ZfileGCS;
 import com.jayameen.zfiles.factory.adaptors.impl.ZfileLocal;
@@ -22,6 +23,7 @@ public class ZfileFactory {
    private final ZfileLocal zfileLocal;
    private final ZfileGCS zfileGCS;
    private final ZfileS3 zfileS3;
+    private final ZfileAzure zfileAzure;
 
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    public Zfile getZfile(){
@@ -34,6 +36,7 @@ public class ZfileFactory {
            case "local": this.zfile = zfileLocal; break;
            case "gcp": this.zfile = zfileGCS; break;
            case "s3": this.zfile = zfileS3; break;
+           case "azure": this.zfile = zfileAzure; break;
        }
    }
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
