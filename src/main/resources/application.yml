@@ -24,10 +24,10 @@ local:
 gcp:
   prefix-http-url: https://storage.googleapis.com
   prefix-upload:
-  project-id: ${GCP_PROJECT_ID}
-  bucket-id: ${GCP_BUCKET_ID}
+  project-id: ${GCP_PROJECT_ID:test}
+  bucket-id: ${GCP_BUCKET_ID:test}
   upload-url: https://storage.googleapis.com
-  config-data: ${GCP_CONFIG_DATA_KEY}
+  config-data: ${GCP_CONFIG_DATA_KEY:test}
 
 s3:
   prefix-http-url: https://uxin.sgp1.digitaloceanspaces.com
@@ -39,8 +39,8 @@ s3:
   secret: ${DO_SECRET:test}
 
 azure:
-  connection-string: ${AZURE_CONNECTION_STRING}
-  endpoint: ${AZURE_ENDPOINT}
-  container-name: ${AZURE_CONTAINER_NAME}
+  connection-string: ${AZURE_CONNECTION_STRING:DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=yourkey;EndpointSuffix=core.windows.net}
+  endpoint: ${AZURE_ENDPOINT:https://teststorage.blob.core.windows.net/}
+  container-name: ${AZURE_CONTAINER_NAME:test}
   prefix-http-url: https://xindusazureblobstorage.blob.core.windows.net
   prefix-upload:

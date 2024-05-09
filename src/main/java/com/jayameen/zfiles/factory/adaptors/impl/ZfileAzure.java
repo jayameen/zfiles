@@ -56,7 +56,7 @@ public class ZfileAzure implements Zfile {
         if (blob != null) {
             return Base64.getEncoder().encodeToString(blob);
         } else {
-            throw new RuntimeException("File not found in Azure");
+            throw new RuntimeException("File not found");
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ public class ZfileAzure implements Zfile {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private String createFileFromByteArray(FileRequest request) {
-        OffsetDateTime         expiryTime = OffsetDateTime.now().plusDays(365);
+        OffsetDateTime         expiryTime = OffsetDateTime.now().plusDays(365*10);
         String                filePathKey = ZFileUtils.createFileHttpURL(prefixUpload,request.getFilePath(),request.getFileName());
         filePathKey                       = StringUtils.removeStart(filePathKey, "/");
         BlobClient             blobClient = azureStorageContainerClient.getBlobClient(filePathKey);
