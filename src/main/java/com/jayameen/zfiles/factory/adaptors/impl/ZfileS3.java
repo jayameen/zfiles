@@ -94,7 +94,6 @@ public class ZfileS3 implements Zfile {
         String                filePathKey = ZFileUtils.createFileHttpURL(prefixUpload,request.getFilePath(),request.getFileName());
         filePathKey                       = StringUtils.removeStart(filePathKey, "/");
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketID, filePathKey , new ByteArrayInputStream(request.getByteArray()), new ObjectMetadata());
-
         if(request.getIsPrivate()){
             awsS3Client.putObject(putObjectRequest.withCannedAcl(CannedAccessControlList.Private));
         }else{
