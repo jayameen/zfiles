@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
+import java.net.URLDecoder;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -35,7 +36,7 @@ import java.util.List;
 public class ZfileAzure implements Zfile {
 
 
-    @Value("${gcp.azure-http-url:''}") private String prefixHttpUrl;
+    @Value("${azure.prefix-http-url:''}") private String prefixHttpUrl;
     @Value("${azure.prefix-upload}") private String prefixUpload;
     @Value("${azure.container-name:''}") private String containerName;
 
@@ -50,10 +51,7 @@ public class ZfileAzure implements Zfile {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public String getFileInBase64(FileRequest request) throws Exception {
-        System.out.println("request.getFileUrl(): " + request.getFileUrl());
-        String       fullPath = request.getFileUrl().replaceAll(prefixHttpUrl + "/" + containerName, "");
-        System.out.println("fullPath: " + fullPath);
-        BlobClient blobClient = azureStorageContainerClient.getBlobClient(fullPath);
+        BlobClient blobClient = azureStorageContainerClient.getBlobClient(getFileKey(request));
         byte[]           blob = blobClient.downloadContent().toBytes();
         if (blob != null) {
             return Base64.getEncoder().encodeToString(blob);
@@ -83,7 +81,8 @@ public class ZfileAzure implements Zfile {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public Boolean deleteFileByUrl(FileRequest request) throws Exception {
-        return true;
+        BlobClient blobClient = azureStorageContainerClient.getBlobClient(getFileKey(request));
+        return blobClient.deleteIfExists();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
@@ -110,6 +109,15 @@ public class ZfileAzure implements Zfile {
         }else{
             return blobClient.getBlobUrl()+"?"+blobClient.generateSas(new BlobServiceSasSignatureValues(expiryTime, new BlobSasPermission().setReadPermission(true)));
         }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private String getFileKey(FileRequest request) throws Exception{
+        String  fullPath = request.getFileUrl().replaceAll(prefixHttpUrl + "/" + containerName + "/", "");
+                fullPath = URLDecoder.decode(fullPath, "UTF-8");
+                if(fullPath.contains("?")){
+                   fullPath = fullPath.substring(0, fullPath.indexOf("?"));
+                }
+        return fullPath;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
