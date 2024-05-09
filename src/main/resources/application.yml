@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: zfiles
+
+server:
+  port: 8081
+  servlet:
+    context-path: /${spring.application.name}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+zfiles:
+  cdn-type: azure
+  max-filesize-mb: 10
+
+local:
+  prefix-http-url: http://localhost
+  prefix-upload: /Users/madan/Documents/JayaMeen/www/files
+
+gcp:
+  prefix-http-url: https://storage.googleapis.com
+  prefix-upload:
+  project-id: ${GCP_PROJECT_ID}
+  bucket-id: ${GCP_BUCKET_ID}
+  upload-url: https://storage.googleapis.com
+  config-data: ${GCP_CONFIG_DATA_KEY}
+
+s3:
+  prefix-http-url: https://uxin.sgp1.digitaloceanspaces.com
+  prefix-upload:
+  region: sgp1
+  bucket-id: uxin
+  upload-url: https://sgp1.digitaloceanspaces.com
+  key: ${DO_KEY:test}
+  secret: ${DO_SECRET:test}
+
+azure:
+  connection-string: ${AZURE_CONNECTION_STRING}
+  endpoint: ${AZURE_ENDPOINT}
+  container-name: ${AZURE_CONTAINER_NAME}
+  prefix-http-url: https://xindusazureblobstorage.blob.core.windows.net
+  prefix-upload:
