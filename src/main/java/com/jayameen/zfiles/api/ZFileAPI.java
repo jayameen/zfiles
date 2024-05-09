@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/object")
 @RequiredArgsConstructor
 public class ZFileAPI {
 
@@ -56,7 +56,7 @@ public class ZFileAPI {
     public ResponseEntity<AppResponse> createOrUpdateMultipleFromBase64Content(@RequestBody List<FileRequest> requests) throws Exception {
         AppResponse appResponse = new AppResponse<>();
         appResponse.setStatus(HttpStatus.OK.getReasonPhrase().toLowerCase());
-        appResponse.setData(Collections.singletonList(factory.getZfile().createOrUpdateMultipleFromBase64Content(requests)));
+        appResponse.setData(factory.getZfile().createOrUpdateMultipleFromBase64Content(requests));
         return ResponseEntity.ok().body(appResponse);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

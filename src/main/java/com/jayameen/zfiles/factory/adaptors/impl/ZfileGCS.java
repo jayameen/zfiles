@@ -42,7 +42,7 @@ public class ZfileGCS implements Zfile {
             byte[] contentBytes = blob.getContent();
             return Base64.getEncoder().encodeToString(contentBytes);
         } else {
-            throw new RuntimeException("File not found in GCS");
+            throw new RuntimeException("File not found");
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
