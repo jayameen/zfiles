@@ -229,6 +229,13 @@ Success Response: 200 OK
 ```
 
 #### Errors
+> Error Response: 400 Bad Request
+```json
+{
+  "status": "error",
+  "description": "File size exceeds the limit of 10 MB"
+}
+```
 
 > Error Response: 500 Internal Server Error
 ```json
