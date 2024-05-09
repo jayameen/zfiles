@@ -1,6 +1,10 @@
 spring:
   application:
     name: zfiles
+  servlet:
+    multipart:
+      max-file-size: 25000000
+      max-request-size: 25000000
 
 server:
   port: 8081
@@ -14,8 +18,7 @@ spring:
       on-profile: local
 
 zfiles:
-  cdn-type: azure
-  max-filesize-mb: 10
+  cdn-type: local
 
 local:
   prefix-http-url: http://localhost

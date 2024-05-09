@@ -224,7 +224,7 @@ Success Response: 200 OK
     "file_path" : "/madankn",
     "is_private" : false,
     "base64_data" : "iVBORw=="
-    "file_url" : "http://localhost:8081/zfiles/madankn/vs1.jpeg",
+    "file_url" : "http://localhost:8081/zfiles/madankn/vs1.jpeg"
 }
 ```
 
@@ -238,6 +238,62 @@ Success Response: 200 OK
 }
 ```
 
+### How to configure application.yml
+```yaml
+spring:
+  application:
+    name: zfiles # application name - this is also referred in the context path
+  servlet:
+    multipart:
+      max-file-size: 25000000 # max file upload size 25MB
+      max-request-size: 25000000 # max request size 25MB
+
+server:
+  port: 8081 # server port
+  servlet:
+    context-path: /${spring.application.name} # context path
+
+---
+spring:
+  config:
+    activate:
+      on-profile: default # active profile
+
+zfiles:
+  cdn-type: local # gcp, s3, azure, local (default)
+
+# Local File System Configurations
+local:
+  prefix-http-url: http://localhost # local file system http url prefix - You can use this to serve the files from the http server using apache/nginx
+  prefix-upload: /Users/madan/Documents/JayaMeen/www/files # local file system upload prefix path
+
+# Google Cloud Storage Configurations
+gcp:
+  prefix-http-url: https://storage.googleapis.com # google cloud storage http url prefix
+  prefix-upload: # google cloud storage upload prefix path if you want to upload the files to a specific folder
+  project-id: ${GCP_PROJECT_ID:test} # google cloud project id
+  bucket-id: ${GCP_BUCKET_ID:test} # google cloud bucket id
+  upload-url: https://storage.googleapis.com # google cloud storage upload url
+  config-data: ${GCP_CONFIG_DATA_KEY:test} # google cloud storage config data key
+
+# Amazon S3 Configurations
+s3:
+  prefix-http-url: https://uxin.sgp1.digitaloceanspaces.com # amazon s3 http url prefix
+  prefix-upload: # amazon s3 upload prefix path if you want to upload the files to a specific folder
+  region: sgp1 # amazon s3 region
+  bucket-id: uxin # amazon s3 bucket id
+  upload-url: https://sgp1.digitaloceanspaces.com # amazon s3 upload url
+  key: ${DO_KEY:test} # amazon s3 key
+  secret: ${DO_SECRET:test} # amazon s3 secret
+
+azure:
+  connection-string: ${AZURE_CONNECTION_STRING:DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=yourkey;EndpointSuffix=core.windows.net} # azure connection string
+  endpoint: ${AZURE_ENDPOINT:https://teststorage.blob.core.windows.net/} # azure endpoint
+  container-name: ${AZURE_CONTAINER_NAME:test} #  azure container name
+  prefix-http-url: https://xindusazureblobstorage.blob.core.windows.net # azure blob storage http url prefix
+  prefix-upload: # azure blob storage upload prefix path if you want to upload the files to a specific folder
+
+```
 
 
 
