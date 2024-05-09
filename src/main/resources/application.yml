@@ -1,6 +1,10 @@
 spring:
   application:
     name: zfiles
+  servlet:
+    multipart:
+      max-file-size: 10000000
+      max-request-size: 10000000
 
 server:
   port: 8081
@@ -11,11 +15,10 @@ server:
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: default
 
 zfiles:
-  cdn-type: azure
-  max-filesize-mb: 10
+  cdn-type: local
 
 local:
   prefix-http-url: http://localhost
@@ -27,7 +30,7 @@ gcp:
   project-id: ${GCP_PROJECT_ID:test}
   bucket-id: ${GCP_BUCKET_ID:test}
   upload-url: https://storage.googleapis.com
-  config-data: ${GCP_CONFIG_DATA_KEY:test}
+  config-data: ${GCP_CONFIG_DATA_KEY:''}
 
 s3:
   prefix-http-url: https://uxin.sgp1.digitaloceanspaces.com
