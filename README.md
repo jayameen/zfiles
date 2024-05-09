@@ -224,7 +224,7 @@ Success Response: 200 OK
     "file_path" : "/madankn",
     "is_private" : false,
     "base64_data" : "iVBORw=="
-    "file_url" : "http://localhost:8081/zfiles/madankn/vs1.jpeg"",
+    "file_url" : "http://localhost:8081/zfiles/madankn/vs1.jpeg",
 }
 ```
 
